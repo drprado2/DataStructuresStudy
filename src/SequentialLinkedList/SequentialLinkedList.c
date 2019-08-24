@@ -1,14 +1,15 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include "lista-linear-sequencial.h"
+#include "SequentialLinkedList.h"
 
 void initializeList(List* list){
     list->size = 0;
 }
 
 void printList(List* list){
+    printf("Printing list \n");
     for(int i=0; i<list->size; i++)
-        printf("List: %i\n", list->items[i]);
+        printf("PK item position %i: %i\n", i, list->items[i].key);
 }
 
 bool add(List* list, Register reg){

@@ -1,9 +1,0 @@
-FUNÇÕES DEVEM EXISTIR
-
-Inicializar Estrutura
-Retornar Quantidade elementos Válidos
-Exibir os elementos da estrutura
-Buscar por um elemento na estrutura
-Inserir elementos na estrutura
-Excluir elementos da estrutura
-Reinicializar a estrutura

@@ -1,20 +1,9 @@
-// Quando importamos módulos próprios não usamos o < > usamos ""
-#include "lista-linear-sequencial.h"
+#include "SequentialLinkedList.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-
-void setPrintTextColorRed(){
-    printf("\033[0;31m");
-}
-
-void setPrintTextColorGreen(){
-    printf("\033[0;32m");
-}
-
-void setPrintTextColorDefault(){
-    printf("\033[0m");
-}
+#include "../Helpers/Helpers.h"
+#include "SequentialLinkedListTests.h"
 
 void initializingList(){
     printf("\nRunning scenario initializing list...\n");
@@ -65,29 +54,20 @@ void addingItems(){
 }
 
 void addingItemsWithFullList(){
-    printf("\nRunning scenario adding items...\n");
+    printf("\nRunning scenario adding items with full list...\n");
     List* list = (List*) malloc(sizeof(List));
     initializeList(list);
-    int numberOfErrors = 0;
 
-    Register reg1 = { .key = 3 };
-    Register reg2 = { .key = 2 };
-    Register reg3 = { .key = 1 };
+    for(int i = 1; i <= 50; i++){
+        Register reg = { .key = i };
+        add(list, reg);
+    }
 
-    bool resultAdd1 = add(list, reg1);
+    Register reg = { .key = 51 };
 
-    if(list->items[0].key != reg1.key || !resultAdd1) numberOfErrors++;
-    if(list->size != 1) numberOfErrors++;
+    bool resultAdd1 = add(list, reg);
 
-    bool resultAdd2 = add(list, reg2);
-    bool resultAdd3 = add(list, reg3);
-
-    if(list->items[0].key != reg1.key) numberOfErrors++;
-    if(list->items[1].key != reg2.key || !resultAdd2) numberOfErrors++;
-    if(list->items[2].key != reg3.key || !resultAdd3) numberOfErrors++;
-    if(list->size != 3) numberOfErrors++;
-
-    if(numberOfErrors == 0) {
+    if(!resultAdd1 && list->size == 50) {
         setPrintTextColorGreen();
         printf("Success!\n");
     } else{
@@ -99,8 +79,9 @@ void addingItemsWithFullList(){
 
 
 void printingList(){
+    printf("\nRunning scenario printing list...\n");
     List* list = (List*) malloc(sizeof(List));
-    initializingList(list);
+    initializeList(list);
     Register reg1 = { .key = 1 };
     Register reg2 = { .key = 2 };
     Register reg3 = { .key = 3 };
@@ -108,19 +89,38 @@ void printingList(){
     add(list, reg2);
     add(list, reg3);
     printList(list);
+    setPrintTextColorGreen();
+    printf("Success!\n");
+    setPrintTextColorDefault();
 }
 
-void addingItemOnSpecificPositionLessThenZero(){
+void addingItensOnSpecificPosition(){
     printf("\nRunning scenario adding item on specific position...\n");
     List* list = (List*) malloc(sizeof(List));
     initializeList(list);
-    int numberOfErrors = 0;
 
-    Register reg1 = { .key = 3 };
+    for(int i = 1; i <= 8; i++){
+        Register reg = { .key = i };
+        add(list, reg);
+    }
 
-    bool result = addOnPosition(list, reg1, -1);
+    Register reg1 = { .key = 9 };
+    Register reg2 = { .key = 10 };
+    Register reg3 = { .key = 11 };
 
-    if(!result && list->size == 0) {
+    bool result1 = addOnPosition(list, reg1, 7);
+    bool result2 = addOnPosition(list, reg2, 0);
+    bool result3 = addOnPosition(list, reg3, 4);
+
+    bool successAdding = result1 && result2 &&  result3;
+
+    int positionReg1 = findIndex(list, reg1.key);
+    int positionReg2 = findIndex(list, reg2.key);
+    int positionReg3 = findIndex(list, reg3.key);
+
+    bool successPositions = positionReg1 == 9 && positionReg2 == 0 && positionReg3 == 4;
+
+    if(successAdding && successPositions && list->size == 11) {
         setPrintTextColorGreen();
         printf("Success!\n");
     } else{
@@ -130,17 +130,17 @@ void addingItemOnSpecificPositionLessThenZero(){
     setPrintTextColorDefault();
 }
 
-void addingItemOnSpecificPositionLessThenZero(){
+void addingItemOnSpecificInvalidPosition(){
     printf("\nRunning scenario adding item on specific position...\n");
     List* list = (List*) malloc(sizeof(List));
     initializeList(list);
-    int numberOfErrors = 0;
+    Register reg = { .key = 1 };
+    Register reg1 = { .key = 2 };
 
-    Register reg1 = { .key = 3 };
+    bool result = addOnPosition(list, reg, -1);
+    bool result1 = addOnPosition(list, reg1, 0);
 
-    bool result = addOnPosition(list, reg1, -1);
-
-    if(!result && list->size == 0) {
+    if(!result && !result1 && list->size == 0) {
         setPrintTextColorGreen();
         printf("Success!\n");
     } else{
@@ -150,8 +150,13 @@ void addingItemOnSpecificPositionLessThenZero(){
     setPrintTextColorDefault();
 }
 
-int main(){
+void runAllSequentialLinkedListScenarios(){
+    printf("\nRunning scenario adding item on specific position...\n");
+    printingList();
     initializingList();
     addingItems();
-//    printingList();
+    addingItemsWithFullList();
+    addingItemOnSpecificInvalidPosition();
+    addingItensOnSpecificPosition();
+    printf("\nRunning scenario adding item on specific position...\n");
 }
